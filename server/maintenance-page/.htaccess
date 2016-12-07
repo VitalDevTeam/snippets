@@ -1,0 +1,14 @@
+# ------------------------------------------------------------------------------
+#  Redirect to Maintenance Page
+# ------------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+    # IP address to ignore
+    RewriteCond %{REMOTE_ADDR} !^96\.81\.80\.1
+
+    RewriteCond %{REQUEST_URI} !/maintenance.php [NC]
+    RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif) [NC]
+    RewriteRule .* /maintenance.php [R=302,L]
+</IfModule>
