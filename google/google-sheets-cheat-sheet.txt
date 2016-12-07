@@ -1,0 +1,8 @@
+# Concatenate Array Formula in Google Sheets
+=ArrayFormula(if(len(B2:B),B2:B&" "&C2:C&" "&E2:E,iferror(1/0)))
+
+# Count How Many Times Data Occurs Within A Range
+=ArrayFormula(if(row(B:B)=1,"Title of Column",if(len(B:B),countif(unique(match(B:B&C:C,B:B&C:C,0)+match(B:B&C:C&H:H,B:B&C:C&H:H,0)/50000),"<="&match(B:B&C:C,B:B&C:C,0)+match(B:B&C:C&H:H,B:B&C:C&H:H,0)/50000)-countif(unique(match(B:B&C:C,B:B&C:C,0)+match(B:B&C:C&H:H,B:B&C:C&H:H,0)/50000),"<"&match(B:B&C:C,B:B&C:C,0)),)))
+
+# This will sort all data on sheet "name of tab" on cells a:l in descensing order
+=sort('Name-of-tab'!A2:L, 1, false)
