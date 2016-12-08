@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>jQuery Tabs Demo | Papermashup.com</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $('#tabs div').hide();
+        $('#tabs div:first').show();
+        $('#tabs ul li:first').addClass('active');
+        $('#tabs ul li a').click(function(){
+            $('#tabs ul li').removeClass('active');
+            $(this).parent().addClass('active');
+            var currentTab = $(this).attr('href');
+            $('#tabs div').hide();
+            $(currentTab).show();
+            return false;
+        });
+    });
+    </script>
+    <style type="text/css">
+    #tabs li {
+        display: inline;
+        list-style: none;
+    }
+    #tabs ul li.active a {
+        color: hotpink;
+    }
+    #tabs div {
+        clear: both;
+    }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tab-1">Tab 1</a></li>
+                <li><a href="#tab-2">Tab 2</a></li>
+                <li><a href="#tab-3">Tab 3</a></li>
+                <li><a href="#tab-4">Tab 4</a></li>
+            </ul>
+            <div id="tab-1">
+                <h3>Tab 1</h3>
+                <p>Nullam quis risus eget urna mollis ornare vel eu leo. Nullam quis risus eget urna mollis ornare vel eu leo. Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+            </div>
+            <div id="tab-2">
+                <h3>Tab 2</h3>
+                <p>Vestibulum id ligula porta felis euismod semper. Etiam porta sem malesuada magna mollis euismod. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit tempus porttitor. Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+            </div>
+            <div id="tab-3">
+                <h3>Tab 3</h3>
+                <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Sed posuere consectetur est at lobortis. Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+            </div>
+            <div id="tab-4">
+                <h3>Tab 4</h3>
+                <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Sed posuere consectetur est at lobortis. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
