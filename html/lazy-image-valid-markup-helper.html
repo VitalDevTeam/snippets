@@ -1,0 +1,20 @@
+<!--img tag -->
+<img
+	class="lazyload"
+	src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+	data-src="actual-image-url.jpg" alt="Descriptive Alternative Text">
+
+<!--picture tag-->
+<picture>
+    <!--[if IE 9]><video style="display: none"><![endif]-->
+    <source data-srcset="small-image.jpg" media="(max-width: 500px)">
+    <source data-srcset="full-size-image.jpg" media="(max-width: 759px)">
+    <source data-srcset="small-image.jpg">
+
+    <!--[if IE 9]></video><![endif]-->
+    <img
+        class="lazyload"
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        data-src="small-image.jpg"
+        alt="Descriptive Alternative Text">
+</picture>
