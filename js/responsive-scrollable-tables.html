@@ -1,0 +1,213 @@
+<script type="text/javascript">
+    var tableController = (function($) {
+        var win, scrollable;
+
+        /**
+         * Detects if the table needs to overflow-x and scroll
+         */
+        function scrollableTableDetect() {
+
+            scrollable.each(function(index, el) {
+
+                var table = $(el),
+                    inner = table.find('.scrollable-table-inner');
+
+                if (inner.outerWidth() < inner.get(0).scrollWidth) {
+                    table.addClass('is-scrollable');
+                } else {
+                    table.removeClass('is-scrollable');
+                }
+
+            });
+
+        }
+
+        function onDocumentReady() {
+            win = $(window);
+            scrollable = $('.scrollable-table');
+
+            scrollableTableDetect();
+
+            win.on('resize', function() {
+                scrollableTableDetect();
+            });
+
+        }
+
+        $(onDocumentReady);
+
+    })(jQuery);
+</script>
+
+<style media="screen">
+
+    /*
+        Sass, not CSS
+     */
+
+    table {
+
+        th,
+        td {
+            padding: 0.5em 0.75em;
+            vertical-align: top;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #ddd;
+            font-weight: 900;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: #f3f3f3;
+        }
+    }
+
+    .scrollable-table {
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+
+        &.is-scrollable:after {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            width: 50px;
+            height: 100%;
+            border-radius: 10px 0 0 10px / 50% 0 0 50%;
+            box-shadow: -5px 0 10px rgba(0, 0, 0, 0.25);
+            content: '';
+        }
+
+        .scrollable-table-inner {
+            overflow-x: auto;
+
+            ::-webkit-scrollbar {
+                height: 12px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: #f0f0f0;
+                box-shadow: 0 0 2px rgba(0, 0, 0, 0.15) inset;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: #ccc;
+                border-radius: 6px;
+            }
+
+        }
+
+    }
+</style>
+
+<div class="scrollable-table">
+    <div class="scrollable-table-inner">
+
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Zip</th>
+                <th>Bank Routing</th>
+                <th>Bank Account</th>
+            </tr>
+            <tr>
+                <td>Veda</td>
+                <td>feugiat@dolor.net</td>
+                <td>Ap #524-2301 Feugiat Road</td>
+                <td>Daiano</td>
+                <td>25949</td>
+                <td>HR9530357221014204266</td>
+                <td>GB64IAWL50561289057517</td>
+            </tr>
+            <tr>
+                <td>Audrey</td>
+                <td>sollicitudin.commodo@Integertinciduntaliquam.net</td>
+                <td>P.O. Box 243, 3999 Luctus, Rd.</td>
+                <td>Vancouver</td>
+                <td>G5L 4M4</td>
+                <td>SI25737204112660006</td>
+                <td>MD4001180118351983013278</td>
+            </tr>
+            <tr>
+                <td>Sage</td>
+                <td>at@egetmetusIn.ca</td>
+                <td>P.O. Box 713, 9588 Sed Rd.</td>
+                <td>Warren</td>
+                <td>14213</td>
+                <td>CR6871310506954072348</td>
+                <td>BG05PEWU05207973155443</td>
+            </tr>
+            <tr>
+                <td>Avye</td>
+                <td>magnis.dis@Sed.edu</td>
+                <td>Ap #546-9349 Non, Rd.</td>
+                <td>Ambala Sadar</td>
+                <td>3292</td>
+                <td>IT973QZMKI19303496890480290</td>
+                <td>RO68PQBX9606561558263298</td>
+            </tr>
+            <tr>
+                <td>Paki</td>
+                <td>fringilla@ultricesVivamus.edu</td>
+                <td>579-3557 Lacinia St.</td>
+                <td>Lauro de Freitas</td>
+                <td>78789</td>
+                <td>RO87UHUT1143952849988509</td>
+                <td>SM2335111391235457861816380</td>
+            </tr>
+            <tr>
+                <td>Veda</td>
+                <td>feugiat@dolor.net</td>
+                <td>Ap #524-2301 Feugiat Road</td>
+                <td>Daiano</td>
+                <td>25949</td>
+                <td>HR9530357221014204266</td>
+                <td>GB64IAWL50561289057517</td>
+            </tr>
+            <tr>
+                <td>Audrey</td>
+                <td>sollicitudin.commodo@Integertinciduntaliquam.net</td>
+                <td>P.O. Box 243, 3999 Luctus, Rd.</td>
+                <td>Vancouver</td>
+                <td>G5L 4M4</td>
+                <td>SI25737204112660006</td>
+                <td>MD4001180118351983013278</td>
+            </tr>
+            <tr>
+                <td>Sage</td>
+                <td>at@egetmetusIn.ca</td>
+                <td>P.O. Box 713, 9588 Sed Rd.</td>
+                <td>Warren</td>
+                <td>14213</td>
+                <td>CR6871310506954072348</td>
+                <td>BG05PEWU05207973155443</td>
+            </tr>
+            <tr>
+                <td>Avye</td>
+                <td>magnis.dis@Sed.edu</td>
+                <td>Ap #546-9349 Non, Rd.</td>
+                <td>Ambala Sadar</td>
+                <td>3292</td>
+                <td>IT973QZMKI19303496890480290</td>
+                <td>RO68PQBX9606561558263298</td>
+            </tr>
+            <tr>
+                <td>Paki</td>
+                <td>fringilla@ultricesVivamus.edu</td>
+                <td>579-3557 Lacinia St.</td>
+                <td>Lauro de Freitas</td>
+                <td>78789</td>
+                <td>RO87UHUT1143952849988509</td>
+                <td>SM2335111391235457861816380</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
