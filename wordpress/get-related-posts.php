@@ -4,7 +4,7 @@
  * and cache the results in a transient
  * @param  integer $post_id Post ID
  * @param  integer $limit   Number of posts to return
- * @return array            Array of posts
+ * @return array            Array of post IDs
  */
 function get_related_posts($post_id, $limit = 6){
     $ret = array();
