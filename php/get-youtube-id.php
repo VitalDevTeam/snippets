@@ -1,4 +1,9 @@
 <?php
+/**
+ * Filter YouTube video ID from video URL
+ * @param  [string] $url Video page URL
+ * @return [string]      Video ID
+ */
 function get_youtube_id($url) {
     $pattern =
         '%^# Match any youtube URL
@@ -16,10 +21,13 @@ function get_youtube_id($url) {
         ([\w-]{10,12})  # Allow 10-12 for 11 char youtube id.
         $%x'
         ;
+
     $result = preg_match($pattern, $url, $matches);
+
     if (false !== $result) {
         return $matches[1];
     }
+
     return false;
 }
 ?>
