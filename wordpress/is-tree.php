@@ -8,10 +8,12 @@ function is_tree($pid) {
     global $post;
     if (is_page($pid))
         return true;
-    $anc = get_post_ancestors($post->ID);
-    foreach ($anc as $ancestor) {
-        if (is_page() && $ancestor == $pid) {
-            return true;
+    if ($post) {
+        $anc = get_post_ancestors($post->ID);
+        foreach ($anc as $ancestor) {
+            if (is_page() && $ancestor == $pid) {
+                return true;
+            }
         }
     }
     return false;
