@@ -11,6 +11,7 @@ function admin_custom_post_columns($columns) {
 }
 
 add_filter('manage_posts_columns', 'admin_custom_post_columns');
+add_filter('manage_edit-posts_sortable_columns', 'admin_custom_post_columns');
 
 /**
  * Populate columns
