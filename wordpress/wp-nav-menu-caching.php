@@ -59,6 +59,9 @@ echo $menu_query;
 
 // In functions.php:
 
+/**
+ * Deletes wp_nav_menu transients on post or menu updates
+ */
 function delete_unique_menu_transients() {
 
     global $wpdb;
