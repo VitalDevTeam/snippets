@@ -39,7 +39,7 @@ You must generate a unique transient for each page
 ------------------------------------------------ */
 
 // Setup unique key
-$key = md5($_SERVER['REQUEST_URI']);
+$key = md5(esc_url($_SERVER['REQUEST_URI']));
 
 // Create unique transient
 $menu_query = get_transient('main_menu_' . $key);
