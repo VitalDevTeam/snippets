@@ -26,6 +26,11 @@ echo $menu_query;
  * Delete menu cache when menus or posts are updated
  */
 function delete_menu_transients() {
+
+	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+		return;
+	}
+
     delete_transient('main_menu_query');
 }
 
@@ -63,6 +68,10 @@ echo $menu_query;
  * Deletes wp_nav_menu transients on post or menu updates
  */
 function delete_unique_menu_transients() {
+
+	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+		return;
+	}
 
     global $wpdb;
 
