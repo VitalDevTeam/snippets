@@ -16,7 +16,7 @@ if (isset($_ENV['PANTHEON_ENVIRONMENT']) && (php_sapi_name() != 'cli')) {
 	// Force HTTPS
 	if ($https_set === 'off') {
 		header($status_302);
-		header('Location: https://' . $site_domain . $_SERVER['REQUEST_URI'] . '/');
+		header('Location: https://' . $site_domain . $_SERVER['REQUEST_URI']);
 		exit;
 	}
 
