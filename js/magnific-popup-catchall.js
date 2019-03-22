@@ -115,7 +115,7 @@ $('a[href$=".jpg"], a[href$=".png"], a[href$=".jpeg"], a[href$=".gif"]').not('.g
 $('.gallery').magnificPopup(mpGalleryOpts);
 
 // Video links
-$('a[href*="youtube.com"]').magnificPopup(mpYouTubeOpts);
+$('a[href*="youtube.com/watch"]').magnificPopup(mpYouTubeOpts);
 $('a[href*="youtu.be"]').magnificPopup(mpYouTubeOpts);
 $('a[href*="vimeo.com"]').magnificPopup(mpVimeoOpts);
 $('a[href*="wistia.com"]').magnificPopup(mpWistiaOpts);
