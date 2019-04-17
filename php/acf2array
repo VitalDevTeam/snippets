@@ -1,0 +1,23 @@
+#!/usr/bin/php
+
+<?php
+
+/**
+ * ACF JSON to pretty array - returns a nicely formatted PHP array from ACF JSON
+ * Copy this file to /usr/local/bin/acf2array and chmod 755
+ * Usage: acf2array {acf.json}
+ */
+
+function varexport($expression, $return=FALSE) {
+    // $export = var_export($expression, TRUE);
+	$export = preg_replace("/[0-9]+ \=\>/i", '[', var_export($expression, TRUE));
+    $export = preg_replace("/^([ ]*)(.*)/m", '$1$1$2', $export);
+    $array = preg_split("/\r\n|\n|\r/", $export);
+    $array = preg_replace(["/\s*array\s\($/", "/\)(,)?$/", "/\s=>\s$/"], [NULL, ']$1', ' => ['], $array);
+    $export = join(PHP_EOL, array_filter(["["] + $array));
+    if ((bool)$return) return $export; else echo $export;
+}
+
+if ($file = @file_get_contents($argv[1])) {
+	echo preg_replace('~(?:^|\G)\h{4}~m', "\t", varexport(json_decode($file, true), true))."\n";
+}
