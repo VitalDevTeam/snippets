@@ -1,11 +1,14 @@
 <?php
-/** Redirects */
+if (!function_exists('redirect')) {
+	function redirect($url, $status_code = 301) {
+		header('Location: ' . $url, true, $status_code);
+		exit();
+	}
+}
 
 if (isset($_ENV['PANTHEON_ENVIRONMENT']) && (php_sapi_name() != 'cli')) {
 	$https_set = $_SERVER['HTTPS'] ?? false;
 	$site_protocol = ($https_set === 'on') ? 'https://' : 'http://';
-	$status_301 = 'HTTP/1.0 301 Moved Permanently';
-	$status_302 = 'HTTP/1.0 302 Moved Temporarily';
 
 	if ($_ENV['PANTHEON_ENVIRONMENT'] === 'live') {
 		$site_domain = 'productionsite.com';
@@ -15,31 +18,23 @@ if (isset($_ENV['PANTHEON_ENVIRONMENT']) && (php_sapi_name() != 'cli')) {
 
 	// Force HTTPS
 	if ($https_set === 'off') {
-		header($status_302);
-		header('Location: https://' . $site_domain . $_SERVER['REQUEST_URI']);
-		exit;
+		redirect('Location: https://' . $site_domain . $_SERVER['REQUEST_URI']);
 	}
 
 	// Force non-www domain and HTTPS
 	if (substr($site_domain, 0, 4) === 'www.') {
 		$site_domain = str_replace('www.', '', $site_domain);
-		header($status_302);
-		header('Location: https://' . $site_domain . $_SERVER['REQUEST_URI']);
-		exit;
+		redirect('Location: https://' . $site_domain . $_SERVER['REQUEST_URI']);
 	}
 
 	// Force www domain and HTTPS
 	// if (substr($site_domain, 0, 4) !== 'www.') {
-	// 	header($status_302);
-	// 	header('Location: https://www.' . $site_domain . $_SERVER['REQUEST_URI']);
-	// 	exit;
+	// 	redirect('Location: https://www.' . $site_domain . $_SERVER['REQUEST_URI']);
 	// }
 
 	// Match hostname with OR without www
 	if (preg_match('/(www\.)?anotherdomain\.com/', $site_domain) === 1) {
-		header($status_302);
-		header('Location: ' . $site_protocol . $site_domain . $_SERVER['REQUEST_URI']);
-		exit();
+		redirect('Location: ' . $site_protocol . $site_domain . $_SERVER['REQUEST_URI']);
 	}
 
 	// Match multiple subdomains
@@ -49,9 +44,7 @@ if (isset($_ENV['PANTHEON_ENVIRONMENT']) && (php_sapi_name() != 'cli')) {
 		'sub3.example.com',
 		'sub4.example.com',
 	])) {
-		header($status_302);
-		header('Location: ' . $site_protocol . $site_domain . '/new-path-for-all/');
-		exit();
+		redirect('Location: ' . $site_protocol . $site_domain . '/new-path-for-all/');
 	}
 
 	// Match multiple paths
@@ -60,57 +53,68 @@ if (isset($_ENV['PANTHEON_ENVIRONMENT']) && (php_sapi_name() != 'cli')) {
 		'/another/path',
 		'/old-path',
 	])) {
-		header($status_302);
-		header('Location: ' . $site_protocol . $site_domain . '/new-path-for-all/');
-		exit();
+		redirect('Location: ' . $site_protocol . $site_domain . '/new-path-for-all/');
 	}
 
 	// Match one path
 	if ($_SERVER['REQUEST_URI'] === '/old') {
-		header($status_302);
-		header('Location: ' . $site_protocol . $site_domain . '/new-path/');
-		exit();
+		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
 	}
 
 	// Match one path, trailing slash optional
 	if (preg_match('/\/requested-path(\/)?/', $_SERVER['REQUEST_URI']) === 1) {
-		header($status_302);
-		header('Location: ' . $site_protocol . $site_domain . '/new-path/');
-		exit();
+		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
 	}
 
 	// Match entire path directory
 	if (preg_match('/\/requested-path(.*)/', $_SERVER['REQUEST_URI']) === 1) {
-		header($status_302);
-		header('Location: ' . $site_protocol . $site_domain . '/new-path/');
-		exit();
+		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
 	}
 
 	// Match URL parameter specific value
 	if (isset($_GET['foo']) && $_GET['foo'] === 'bar') {
-		header($status_302);
-		header('Location: ' . $site_protocol . $site_domain . '/new-path/');
-		exit();
+		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
 	}
 
 	// Match URL parameter exists
 	if (isset($_GET['foo'])) {
-		header($status_302);
-		header('Location: ' . $site_protocol . $site_domain . '/new-path/');
-		exit();
+		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
 	}
 
 	// Match URL that has any parameter
 	if (!empty($_GET)) {
-		header($status_302);
-		header('Location: ' . $site_protocol . $site_domain . '/new-path/');
-		exit();
+		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
 	}
 
-	// Name transaction "redirect" in New Relic for improved reporting (optional)
-	if (extension_loaded('newrelic')) {
-		newrelic_name_transaction('redirect');
+	// Redirect URL to URL
+	$redirect_rule = [
+		'/foo/' => '/bar/',
+	];
+
+	foreach ($redirect_rule as $pattern => $redirect) {
+
+		if (preg_match($pattern, $_SERVER['REQUEST_URI'])) {
+			$new_request_uri = preg_replace($pattern, $redirect, $_SERVER['REQUEST_URI']);
+			$new_url = $site_protocol . $_SERVER['HTTP_HOST'] . $new_request_uri;
+			redirect($new_url);
+		}
 	}
+
+	// Redirect match URL to URL
+	$redirect_match = [
+		'/\/foo\/(.*)/' => '/bar/',
+	];
+
+	foreach ($redirect_match as $pattern => $redirect) {
+
+		if (preg_match($pattern, $_SERVER['REQUEST_URI'], $matches)) {
+			if ($matches[1]) {
+				$redirect = $redirect . $matches[1];
+				$new_request_uri = preg_replace($pattern, $redirect, $_SERVER['REQUEST_URI']);
+				$new_url = $site_protocol . $_SERVER['HTTP_HOST'] . $new_request_uri;
+				redirect($new_url);
+			}
+		}
+	}
+
 }
-
-/* That's all, stop editing! Happy Pressing. */
