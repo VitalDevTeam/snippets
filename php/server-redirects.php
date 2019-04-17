@@ -18,23 +18,23 @@ if (isset($_ENV['PANTHEON_ENVIRONMENT']) && (php_sapi_name() != 'cli')) {
 
 	// Force HTTPS
 	if ($https_set === 'off') {
-		redirect('Location: https://' . $site_domain . $_SERVER['REQUEST_URI']);
+		redirect('https://' . $site_domain . $_SERVER['REQUEST_URI']);
 	}
 
 	// Force non-www domain and HTTPS
 	if (substr($site_domain, 0, 4) === 'www.') {
 		$site_domain = str_replace('www.', '', $site_domain);
-		redirect('Location: https://' . $site_domain . $_SERVER['REQUEST_URI']);
+		redirect('https://' . $site_domain . $_SERVER['REQUEST_URI']);
 	}
 
 	// Force www domain and HTTPS
 	// if (substr($site_domain, 0, 4) !== 'www.') {
-	// 	redirect('Location: https://www.' . $site_domain . $_SERVER['REQUEST_URI']);
+	// 	redirect('https://www.' . $site_domain . $_SERVER['REQUEST_URI']);
 	// }
 
 	// Match hostname with OR without www
 	if (preg_match('/(www\.)?anotherdomain\.com/', $site_domain) === 1) {
-		redirect('Location: ' . $site_protocol . $site_domain . $_SERVER['REQUEST_URI']);
+		redirect($site_protocol . $site_domain . $_SERVER['REQUEST_URI']);
 	}
 
 	// Match multiple subdomains
@@ -44,7 +44,7 @@ if (isset($_ENV['PANTHEON_ENVIRONMENT']) && (php_sapi_name() != 'cli')) {
 		'sub3.example.com',
 		'sub4.example.com',
 	])) {
-		redirect('Location: ' . $site_protocol . $site_domain . '/new-path-for-all/');
+		redirect($site_protocol . $site_domain . '/new-path-for-all/');
 	}
 
 	// Match multiple paths
@@ -53,54 +53,54 @@ if (isset($_ENV['PANTHEON_ENVIRONMENT']) && (php_sapi_name() != 'cli')) {
 		'/another/path',
 		'/old-path',
 	])) {
-		redirect('Location: ' . $site_protocol . $site_domain . '/new-path-for-all/');
+		redirect($site_protocol . $site_domain . '/new-path-for-all/');
 	}
 
 	// Match one path
 	if ($_SERVER['REQUEST_URI'] === '/old') {
-		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
+		redirect($site_protocol . $site_domain . '/new-path/');
 	}
 
 	// Match one path, trailing slash optional
 	if (preg_match('/\/requested-path(\/)?/', $_SERVER['REQUEST_URI']) === 1) {
-		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
+		redirect($site_protocol . $site_domain . '/new-path/');
 	}
 
 	// Match entire path directory
 	if (preg_match('/\/requested-path(.*)/', $_SERVER['REQUEST_URI']) === 1) {
-		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
+		redirect($site_protocol . $site_domain . '/new-path/');
 	}
 
 	// Match URL parameter specific value
 	if (isset($_GET['foo']) && $_GET['foo'] === 'bar') {
-		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
+		redirect($site_protocol . $site_domain . '/new-path/');
 	}
 
 	// Match URL parameter exists
 	if (isset($_GET['foo'])) {
-		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
+		redirect($site_protocol . $site_domain . '/new-path/');
 	}
 
 	// Match URL that has any parameter
 	if (!empty($_GET)) {
-		redirect('Location: ' . $site_protocol . $site_domain . '/new-path/');
+		redirect($site_protocol . $site_domain . '/new-path/');
 	}
 
-	// Redirect URL to URL
-	$redirect_rule = [
-		'/foo/' => '/bar/',
-	];
+	// Match one path (loop)
+	switch ($_SERVER['REQUEST_URI']) {
+		case '/foo/':
+			redirect($site_protocol . $site_domain . '/bar/');
+			break;
 
-	foreach ($redirect_rule as $pattern => $redirect) {
+		case '/foo2/':
+			redirect($site_protocol . $site_domain . '/bar2/');
+			break;
 
-		if (preg_match($pattern, $_SERVER['REQUEST_URI'])) {
-			$new_request_uri = preg_replace($pattern, $redirect, $_SERVER['REQUEST_URI']);
-			$new_url = $site_protocol . $_SERVER['HTTP_HOST'] . $new_request_uri;
-			redirect($new_url);
-		}
+		default:
+			break;
 	}
 
-	// Redirect match URL to URL
+	// Redirect match URL to URL (loop)
 	$redirect_match = [
 		'/\/foo\/(.*)/' => '/bar/',
 	];
